@@ -15,7 +15,7 @@ on:
     tags: [v*]
 
 env:
-  PACT_BROKER_BASE_URL: 'https://homefun.pactflow.io/'
+  PACT_BROKER_BASE_URL: 'https://homefunny.pactflow.io/'
   PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
