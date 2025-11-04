@@ -15,9 +15,8 @@ on:
     tags: [v*]
 
 env:
-  PACT_BROKER_BASE_URL: 'https://test.pactflow.io'
-  PACT_BROKER_USERNAME: dXfltyFMgNOFZAxr8io9wJ37iUpY42M
-  PACT_BROKER_PASSWORD: O5AIZWxelWbLvqMd8PkAVycBJh2Psyg1
+  PACT_BROKER_BASE_URL: 'https://homefun.pactflow.io/'
+  PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
