@@ -16,4 +16,4 @@ Pact plugin development board: https://github.com/pact-foundation/pact-plugins/p
 
 == License and Copyright
 
-This plugin is released under the *MIT License* and is copyright © 2021-23 Ali Ustek.
+Just for testin purposes
