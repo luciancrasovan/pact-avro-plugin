@@ -75,10 +75,10 @@ jobs:
       - name: Pact publish *nix
         if: '!contains(runner.os, ''windows'')'
         shell: bash
-        run: pact-broker publish "modules/examples/consumer/target/pacts" --consumer-app-version=${{ steps.vars.outputs.git_tag }}-${{ runner.os }} --tag=${{ steps.vars.outputs.git_tag }}-${{ runner.os }} 
+        run: pact-broker publish "modules/examples/consumer/target/pacts" --consumer-app-version=v1-${{ runner.os }} --tag=v1-${{ runner.os }}
 
       - name: Test Provider
         env:
-          PACT_BROKER_TAG: ${{ steps.vars.outputs.git_tag }}-${{ runner.os }}
+          PACT_BROKER_TAG: v1-${{ runner.os }}
         shell: bash
         run: sbt '++ ${{ matrix.scala }}' provider/test
