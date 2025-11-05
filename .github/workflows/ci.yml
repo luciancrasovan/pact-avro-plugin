@@ -66,39 +66,14 @@ jobs:
         run: |
           echo "=== Building plugin ==="
           sbt '++ ${{ matrix.scala }}' plugin/stage
-          
-          echo "=== Checking stage output ==="
-          ls -la modules/plugin/target/universal/stage/
-          
-          echo "=== Checking for pact-plugin.json ==="
-          find modules/plugin/target/universal/stage/ -name "pact-plugin.json" -exec cat {} \;
-          
+                    
           echo "=== Installing to Pact plugins directory ==="
           mkdir -p ~/.pact/plugins/avro-0.1.0
           cp -r modules/plugin/target/universal/stage/* ~/.pact/plugins/avro-0.1.0/
-          
-          echo "=== Verifying installation ==="
-          ls -la ~/.pact/plugins/
-          ls -la ~/.pact/plugins/avro-0.1.0/
-          
-          echo "=== Checking manifest ==="
-          if [ -f ~/.pact/plugins/avro-0.1.0/pact-plugin.json ]; then
-            cat ~/.pact/plugins/avro-0.1.0/pact-plugin.json
-          else
-            echo "ERROR: pact-plugin.json not found!"
-            exit 1
-          fi
-          
-          echo "=== Checking executable ==="
-          if [ -f ~/.pact/plugins/avro-0.1.0/bin/pact-avro-plugin ]; then
-            ls -la ~/.pact/plugins/avro-0.1.0/bin/pact-avro-plugin
-            chmod +x ~/.pact/plugins/avro-0.1.0/bin/pact-avro-plugin
-          else
-            echo "ERROR: Plugin executable not found!"
-            exit 1
-          fi
 
       - name: Test Consumer
+        env:
+          PACT_PLUGIN_DIR: '/home/runner/.pact/plugins'
         shell: bash
         run: sbt '++ ${{ matrix.scala }}' consumer/test
 
