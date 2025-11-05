@@ -16,7 +16,6 @@ lazy val plugin = moduleProject("plugin", "plugin")
   .enablePlugins(
     GitHubPagesPlugin,
     JavaAppPackaging,
-    // https://sbt-native-packager.readthedocs.io/en/stable/recipes/longclasspath.html#long-classpaths
     LauncherJarPlugin
   )
   .settings(
@@ -29,6 +28,44 @@ lazy val plugin = moduleProject("plugin", "plugin")
     gitHubPagesRepoName := "pact-avro-plugin",
     gitHubPagesSiteDir := (`pact-avro-plugin` / baseDirectory).value / "build" / "site",
     gitHubPagesAcceptedTextExtensions := Set(".css", ".html", ".js", ".svg", ".txt", ".woff", ".woff2", ".xml"),
+
+    // Add plugin manifest to resources
+    Compile / resourceGenerators += Def.task {
+      val manifestFile = (Compile / resourceManaged).value / "pact-plugin.json"
+      val pluginVersion = version.value
+      val manifestContent = s"""{
+        |  "manifestVersion": 1,
+        |  "name": "avro",
+        |  "version": "$pluginVersion",
+        |  "pluginInterfaceVersion": 1,
+        |  "entryPoint": "bin/pact-avro-plugin",
+        |  "entryPoints": {
+        |    "linux": {
+        |      "type": "exec",
+        |      "path": "bin/pact-avro-plugin"
+        |    },
+        |    "osx": {
+        |      "type": "exec",
+        |      "path": "bin/pact-avro-plugin"
+        |    },
+        |    "windows": {
+        |      "type": "exec",
+        |      "path": "bin/pact-avro-plugin.bat"
+        |    }
+        |  },
+        |  "dependencies": []
+        |}""".stripMargin
+
+      IO.write(manifestFile, manifestContent)
+      Seq(manifestFile)
+    }.taskValue,
+
+    // Ensure manifest is included in the stage output
+    Universal / mappings += {
+      val manifestFile = (Compile / resourceManaged).value / "pact-plugin.json"
+      manifestFile -> "pact-plugin.json"
+    },
+
     Compile / PB.targets := Seq(
       scalapb.gen() -> (Compile / sourceManaged).value / "scalapb"
     ),
@@ -38,6 +75,7 @@ lazy val plugin = moduleProject("plugin", "plugin")
         Dependencies.test(scalaTest),
     dependencyOverrides ++= Seq(grpcApi, grpcCore, grpcNetty)
   )
+
 lazy val pluginRef = LocalProject("plugin")
 
 lazy val provider = moduleProject("provider", "examples/provider")
