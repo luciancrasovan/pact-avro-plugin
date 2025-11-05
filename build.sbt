@@ -29,9 +29,12 @@ lazy val plugin = moduleProject("plugin", "plugin")
     gitHubPagesSiteDir := (`pact-avro-plugin` / baseDirectory).value / "build" / "site",
     gitHubPagesAcceptedTextExtensions := Set(".css", ".html", ".js", ".svg", ".txt", ".woff", ".woff2", ".xml"),
 
-    // Add plugin manifest to resources
-    Compile / resourceGenerators += Def.task {
-      val manifestFile = (Compile / resourceManaged).value / "pact-plugin.json"
+    // Remove the resourceGenerators section entirely
+
+    // Add manifest creation to the stage task instead
+    Universal / stage := {
+      val stageDir = (Universal / stage).value
+      val manifestFile = stageDir / "pact-plugin.json"
       val pluginVersion = version.value
       val manifestContent = s"""{
         |  "manifestVersion": 1,
@@ -57,13 +60,7 @@ lazy val plugin = moduleProject("plugin", "plugin")
         |}""".stripMargin
 
       IO.write(manifestFile, manifestContent)
-      Seq(manifestFile)
-    }.taskValue,
-
-    // Ensure manifest is included in the stage output
-    Universal / mappings += {
-      val manifestFile = (Compile / resourceManaged).value / "pact-plugin.json"
-      manifestFile -> "pact-plugin.json"
+      stageDir
     },
 
     Compile / PB.targets := Seq(
