@@ -8,8 +8,7 @@ ThisBuild / scalaVersion := scalaV
 
 lazy val pactOptions: Seq[Tests.Argument] = Seq(
   Some(sys.env.getOrElse("PACT_BROKER_BASE_URL", "http://localhost:9292")).map(s => s"-Dpactbroker.url=$s"),
-  sys.env.get("PACT_BROKER_USERNAME").map(s => s"-Dpactbroker.auth.username=$s"),
-  sys.env.get("PACT_BROKER_PASSWORD").map(s => s"-Dpactbroker.auth.password=$s"),
+  sys.env.get("PACT_BROKER_TOKEN").map(s => s"-Dpactbroker.auth.token=$s"),
   sys.env.get("PACT_BROKER_TAG").map(s => s"-Dpactbroker.consumerversionselectors.tags=$s"),
 ).flatten.map(o => Tests.Argument(jupiterTestFramework, o))
 
@@ -43,6 +42,7 @@ lazy val pluginRef = LocalProject("plugin")
 
 lazy val provider = moduleProject("provider", "examples/provider")
   .settings(
+    Test / fork := true,
     Test / sbt.Keys.test := (Test / sbt.Keys.test).dependsOn(pluginRef / buildTestPluginDir).value,
     Test / envVars := Map("PACT_PLUGIN_DIR" -> ((pluginRef / target).value / "plugin").absolutePath),
     testOptions ++= pactOptions,
