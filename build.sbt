@@ -75,26 +75,29 @@ lazy val plugin = moduleProject("plugin", "plugin")
 
 lazy val pluginRef = LocalProject("plugin")
 
+lazy val consumer = moduleProject("consumer", "examples/consumer")
+  .settings(
+    Test / fork := true,
+    Test / envVars := sys.env.get("PACT_PLUGIN_DIR")
+      .map(dir => Map("PACT_PLUGIN_DIR" -> dir))
+      .getOrElse(Map.empty),
+    Compile / avroSource := (Compile / resourceDirectory).value / "avro",
+    libraryDependencies ++=
+      Dependencies.compile(avroCompiler, logback, pulsar4sCore, pulsar4sAvro, scalaLogging) ++
+        Dependencies.test(assertJCore, jUnitInterface, pactConsumerJunit),
+    publish / skip := false
+  )
+
 lazy val provider = moduleProject("provider", "examples/provider")
   .settings(
     Test / fork := true,
-    Test / sbt.Keys.test := (Test / sbt.Keys.test).dependsOn(pluginRef / buildTestPluginDir).value,
-    Test / envVars := Map("PACT_PLUGIN_DIR" -> ((pluginRef / target).value / "plugin").absolutePath),
+    Test / envVars := sys.env.get("PACT_PLUGIN_DIR")
+      .map(dir => Map("PACT_PLUGIN_DIR" -> dir))
+      .getOrElse(Map.empty),
     testOptions ++= pactOptions,
     libraryDependencies ++=
       Dependencies.compile(avroCompiler, logback, pulsar4sCore, pulsar4sAvro, scalacheck) ++
         Dependencies.test(assertJCore, jUnitInterface, pactProviderJunit),
-    publish / skip := false
-  )
-
-lazy val consumer = moduleProject("consumer", "examples/consumer")
-  .settings(
-    Compile / avroSource := (Compile / resourceDirectory).value / "avro",
-    Test / sbt.Keys.test := (Test / sbt.Keys.test).dependsOn(pluginRef / buildTestPluginDir).value,
-    Test / envVars := Map("PACT_PLUGIN_DIR" -> ((pluginRef / target).value / "plugin").absolutePath),
-    libraryDependencies ++=
-      Dependencies.compile(avroCompiler, logback, pulsar4sCore, pulsar4sAvro, scalaLogging) ++
-        Dependencies.test(assertJCore, jUnitInterface, pactConsumerJunit),
     publish / skip := false
   )
 
