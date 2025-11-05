@@ -16,7 +16,7 @@ on:
 
 env:
   PACT_BROKER_BASE_URL: 'https://homefun.pactflow.io/'
-  PACT_BROKER_TOKEN: 'invalid_token'
+  PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -27,13 +27,21 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         scala: [3.5.0]
-        java: [zulu@20]
+        java: [zulu@17, zulu@20]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Setup Java (zulu@17)
+        if: matrix.java == 'zulu@17'
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 17
+          cache: sbt
 
       - name: Setup Java (zulu@20)
         if: matrix.java == 'zulu@20'
