@@ -85,12 +85,6 @@ class PactPulsarConsumerTest {
     // end::configuration[]
   }
 
-  @BeforeEach
-  def debugPluginDiscovery(): Unit = {
-    println(s"PACT_PLUGIN_DIR env: ${sys.env.get("PACT_PLUGIN_DIR")}")
-    println(s"user.home: ${System.getProperty("user.home")}")
-    println(s"Plugin dir exists: ${new java.io.File(s"${System.getProperty("user.home")}/.pact/plugins/avro-0.1.0").exists()}")
-  }
   // tag::consumer_test[]
   @Test
   @PactTestFor(pactMethod = "configureRecordWithDependantRecord")
