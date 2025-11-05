@@ -47,6 +47,22 @@ class PactPulsarConsumerTest {
             .getAbsolutePath();
   }
 
+  @BeforeEach
+  public void debugPluginDiscovery() {
+    System.out.println("PACT_PLUGIN_DIR env: " + System.getenv("PACT_PLUGIN_DIR"));
+    System.out.println("user.home: " + System.getProperty("user.home"));
+
+    File pluginDir = new File(System.getProperty("user.home") + "/.pact/plugins/avro-0.1.0");
+    System.out.println("Plugin dir exists: " + pluginDir.exists());
+
+    if (pluginDir.exists()) {
+      String[] contents = pluginDir.list();
+      if (contents != null) {
+        System.out.println("Plugin dir contents: " + String.join(", ", contents));
+      }
+    }
+  }
+
   @Pact(consumer = "avro-plugin-consumer")
   V4Pact configureRecordWithDependantRecord(PactBuilder builder) {
     // tag::configuration[]
