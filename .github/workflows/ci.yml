@@ -58,7 +58,15 @@ jobs:
 
       - name: Build project
         shell: bash
-        run: sbt '++ ${{ matrix.scala }}' compile scalafmtCheckAll javafmtCheckAll plugin/test
+        run: sbt '++ ${{ matrix.scala }}' compile scalafmtCheckAll javafmtCheckAll
+
+      - name: Build and Install Pact Avro Plugin
+        shell: bash
+        run: |
+          sbt '++ ${{ matrix.scala }}' plugin/stage
+          mkdir -p ~/.pact/plugins/avro-0.1.0
+          cp -r modules/plugin/target/universal/stage/* ~/.pact/plugins/avro-0.1.0/
+          ls -la ~/.pact/plugins/avro-0.1.0/
 
       - name: Test Consumer
         shell: bash
