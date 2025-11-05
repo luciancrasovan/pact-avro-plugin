@@ -51,7 +51,7 @@ class PactPulsarConsumerTest {
   V4Pact configureRecordWithDependantRecord(PactBuilder builder) {
     // tag::configuration[]
     return builder
-        .usingPlugin("avro")
+        .usingPlugin("avro", "0.1.0")
         .expectsToReceive("Order Created", "core/interaction/message")
         .with(
             Map.of(
