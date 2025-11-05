@@ -81,11 +81,26 @@ def moduleProject(name: String, path: String): Project = {
       basicSettings,
       moduleName := name,
       git.useGitDescribe := true,
+      // FIX: Ensure version is always semantic version compatible
       git.gitTagToVersionNumber := { tag: String =>
-        if(tag matches "v[0-9].*") {
-          Some(tag.drop(1).replaceAll("-[0-9]+-.+", ""))
+        if(tag matches "v?[0-9]+\\.[0-9]+\\.[0-9]+.*") {
+          // Valid semver tag
+          Some(tag.stripPrefix("v"))
+        } else {
+          // Fallback to a default semver for non-tagged commits
+          None
         }
-        else None
+      },
+      // Add fallback version when git describe doesn't produce valid semver
+      version := {
+        git.gitDescribedVersion.value match {
+          case Some(v) if v.matches("[0-9]+\\.[0-9]+\\.[0-9]+.*") => v
+          case Some(v) =>
+            // If git describe gives us something like "0.1.0-23-g10eb91a"
+            // Extract just the semver part
+            v.split("-").headOption.getOrElse("0.1.0-SNAPSHOT")
+          case None => "0.1.0-SNAPSHOT"
+        }
       }
     )
 }
