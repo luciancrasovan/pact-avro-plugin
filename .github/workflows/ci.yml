@@ -70,6 +70,10 @@ jobs:
           echo "=== Installing to Pact plugins directory ==="
           mkdir -p ~/.pact/plugins/avro-0.1.0
           cp -r modules/plugin/target/universal/stage/* ~/.pact/plugins/avro-0.1.0/
+          
+          # Show full manifest for transparency
+          echo "Plugin manifest contents:"
+          cat ~/.pact/plugins/avro-*/pact-plugin.json
 
       - name: Test Consumer
         env:
