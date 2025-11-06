@@ -70,6 +70,11 @@ jobs:
           echo "=== Installing to Pact plugins directory ==="
           mkdir -p ~/.pact/plugins/avro-0.1.0
           cp -r modules/plugin/target/universal/stage/* ~/.pact/plugins/avro-0.1.0/
+          chmod +x ~/.pact/plugins/avro-0.1.0/bin/pact-avro-plugin
+          
+          # Verify permissions
+          echo "=== Verifying installation ==="
+          ls -la ~/.pact/plugins/avro-0.1.0/bin/
           
           # Show full manifest for transparency
           echo "Plugin manifest contents:"
