@@ -29,13 +29,11 @@ lazy val plugin = moduleProject("plugin", "plugin")
     gitHubPagesSiteDir := (`pact-avro-plugin` / baseDirectory).value / "build" / "site",
     gitHubPagesAcceptedTextExtensions := Set(".css", ".html", ".js", ".svg", ".txt", ".woff", ".woff2", ".xml"),
 
-    // Remove the resourceGenerators section entirely
-
     // Add manifest creation to the stage task instead
     Universal / stage := {
       val stageDir = (Universal / stage).value
       val manifestFile = stageDir / "pact-plugin.json"
-      val pluginVersion = version.value
+      val pluginVersion = "0.1.0"
       val manifestContent = s"""{
         |  "manifestVersion": 1,
         |  "name": "avro",
