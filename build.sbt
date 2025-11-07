@@ -98,6 +98,7 @@ lazy val provider = moduleProject("provider", "examples/provider")
     Test / javaOptions ++= Seq(
           s"-Dpact.plugin.dir=${System.getProperty("user.home")}/.pact/plugins"
         )
+        ++ Seq("-Dpact.verifier.publishResults=true")
         ++ sys.env.get("PACT_BROKER_TOKEN").map(s => s"-Dpactbroker.auth.token=$s")
         ++ sys.env.get("PACT_BROKER_BASE_URL").map(url => s"-Dpactbroker.host=$url").toSeq,
     libraryDependencies ++=
