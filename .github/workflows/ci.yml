@@ -101,5 +101,6 @@ jobs:
         env:
           PACT_BROKER_TAG: 1.0.0
           PACT_PLUGIN_DIR: '/home/runner/.pact/plugins'
+          PACT_BROKER_BASE_URL: 'https://homefun.pactflow.io/'
         shell: bash
         run: sbt '++ ${{ matrix.scala }}' provider/test
