@@ -100,6 +100,7 @@ lazy val provider = moduleProject("provider", "examples/provider")
         )
         ++ Seq("-Dpact.verifier.publishResults=true")
         ++ Seq("-Dpact.provider.version=1.0.0")
+        ++ Seq("-Dpact.provider.tags=main")
         ++ sys.env.get("PACT_BROKER_TOKEN").map(s => s"-Dpactbroker.auth.token=$s")
         ++ sys.env.get("PACT_BROKER_BASE_URL").map(url => s"-Dpactbroker.host=$url").toSeq,
     libraryDependencies ++=
