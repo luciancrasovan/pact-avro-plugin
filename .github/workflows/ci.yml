@@ -82,30 +82,17 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-plugins/main/scripts/install-plugin-cli.sh | bash
           echo "$HOME/bin" >> $GITHUB_PATH
 
-      - name: Verify Plugin CLI Installation
-        run: pact-plugin-cli --version
-
-      - name: Install Pact Avro Plugin
+      - name: Install Avro Plugin
         run: |
-          pact-plugin-cli -y install https://github.com/pactflow/pact-avro-plugin/releases/latest
+          # Install by name - plugin CLI looks it up in the official index
+          pact-plugin-cli -y install avro
           
-          echo ""
-          echo "Plugin manifest:"
-          cat ~/.pact/plugins/avro-*/pact-plugin.json
-
-      - name: Get and Set Plugin Version
-        id: plugin-version
-        run: |
           VERSION=$(grep -o '"version"[[:space:]]*:[[:space:]]*"[^"]*"' ~/.pact/plugins/avro-*/pact-plugin.json | cut -d'"' -f4)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Installed Avro Plugin version: $VERSION"
+          echo "PLUGIN_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Update Test Files with Plugin Version
+      - name: Update Test Files
         run: |
-          VERSION="${{ steps.plugin-version.outputs.version }}"
-          find src/test -name "*Test.java" -type f \
-            -exec sed -i "s/.usingPlugin(\"avro\", \"[^\"]*\")/.usingPlugin(\"avro\", \"$VERSION\")/g" {} +
-          echo "Updated test files to use version: $VERSION"       
+          find src/test -name "*Test.java" -exec sed -i "s/.usingPlugin(\"avro\", \"[^\"]*\")/.usingPlugin(\"avro\", \"$PLUGIN_VERSION\")/g" {} + 
 
       - name: Test Consumer
         env:
