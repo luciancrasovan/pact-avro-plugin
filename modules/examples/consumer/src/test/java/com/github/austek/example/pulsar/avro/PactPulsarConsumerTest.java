@@ -100,7 +100,7 @@ class PactPulsarConsumerTest {
                         Map.of("name", "notEmpty('Item-2')", "id", "notEmpty('2')"))),
                 Map.entry("userId", "notEmpty('20bef962-8cbd-4b8c-8337-97ae385ac45d')")));
     return builder
-        .usingPlugin("avro", "0.1.0")
+        .usingPlugin("avro", "0.0.6")
         .expectsToReceive("Order Created", "core/interaction/message")
         .with(messageBody)
         .toPact();

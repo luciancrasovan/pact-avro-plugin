@@ -64,7 +64,7 @@ class OrderV1ConsumerTest {
                             "itemId", "notEmpty('8a62474a-7157-4c67-9126-c6dcecb1df08')",
                             "quantity", "notEmpty('2')")))));
     return builder
-        .usingPlugin("avro", "0.1.0")
+        .usingPlugin("avro", "0.0.6")
         .expectsToReceive("Order Created", "core/interaction/message")
         .with(messageBody)
         .toPact();
