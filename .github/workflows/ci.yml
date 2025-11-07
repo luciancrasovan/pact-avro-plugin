@@ -95,11 +95,11 @@ jobs:
       - name: Pact publish *nix
         if: '!contains(runner.os, ''windows'')'
         shell: bash
-        run: pact-broker publish "modules/examples/consumer/target/pacts" --consumer-app-version=2.0.0 --tag=2.0.0
+        run: pact-broker publish "modules/examples/consumer/target/pacts" --consumer-app-version=3.0.0 --tag=3.0.0
 
       - name: Test Provider
         env:
-          PACT_BROKER_TAG: 1.0.0
+          PACT_BROKER_TAG: 3.0.0
           PACT_PLUGIN_DIR: '/home/runner/.pact/plugins'
           PACT_BROKER_BASE_URL: 'https://homefun.pactflow.io/'
         shell: bash
