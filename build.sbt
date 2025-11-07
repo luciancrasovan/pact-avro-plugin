@@ -97,7 +97,7 @@ lazy val provider = moduleProject("provider", "examples/provider")
       .getOrElse(Map.empty),
     Test / javaOptions ++= Seq(
           s"-Dpact.plugin.dir=${System.getProperty("user.home")}/.pact/plugins"
-        ) ++ sys.env.get("PACT_BROKER_BASE_URL").map(s => s"-Dpactbroker.host=$s").toSeq,
+        ) ++ sys.env.get("PACT_BROKER_BASE_URL").map(url => s"-Dpactbroker.host=$url").toSeq,
     libraryDependencies ++=
       Dependencies.compile(avroCompiler, logback, pulsar4sCore, pulsar4sAvro, scalacheck) ++
         Dependencies.test(assertJCore, jUnitInterface, pactProviderJunit),
