@@ -95,7 +95,9 @@ lazy val provider = moduleProject("provider", "examples/provider")
     Test / envVars := sys.env.get("PACT_PLUGIN_DIR")
       .map(dir => Map("PACT_PLUGIN_DIR" -> dir))
       .getOrElse(Map.empty),
-    testOptions ++= pactOptions,
+    Test / javaOptions ++= Seq(
+          s"-Dpact.plugin.dir=${System.getProperty("user.home")}/.pact/plugins"
+        ),      
     libraryDependencies ++=
       Dependencies.compile(avroCompiler, logback, pulsar4sCore, pulsar4sAvro, scalacheck) ++
         Dependencies.test(assertJCore, jUnitInterface, pactProviderJunit),
