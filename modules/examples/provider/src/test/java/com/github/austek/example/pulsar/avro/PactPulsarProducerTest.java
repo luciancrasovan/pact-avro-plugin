@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @Provider("avro-plugin-provider")
-@PactBroker(host="homefun.pactflow.io")
+@PactBroker(host="homefun.pactflow.io",auth="","")
 class PactPulsarProducerTest {
   private static final String AVRO_CONTENT_TYPE = "avro/binary; record=Order";
   private static final String KEY_CONTENT_TYPE = "contentType";
