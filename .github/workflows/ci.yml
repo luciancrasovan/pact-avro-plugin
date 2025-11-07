@@ -95,7 +95,7 @@ jobs:
       - name: Pact publish *nix
         if: '!contains(runner.os, ''windows'')'
         shell: bash
-        run: pact-broker publish "modules/examples/consumer/target/pacts" --consumer-app-version=3.0.0 --tag=main --provider-app-version=1.0.0 --provider-version-tag=main
+        run: pact-broker publish "modules/examples/consumer/target/pacts" --consumer-app-version=3.0.0 --tag=main
 
       - name: Test Provider
         env:
