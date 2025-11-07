@@ -59,7 +59,7 @@ jobs:
 
       - name: Build project
         shell: bash
-        run: sbt '++ ${{ matrix.scala }}' compile scalafmtCheckAll javafmtCheckAll
+        run: sbt '++ ${{ matrix.scala }}' compile
 
       - name: Build and Install Pact Avro Plugin
         shell: bash

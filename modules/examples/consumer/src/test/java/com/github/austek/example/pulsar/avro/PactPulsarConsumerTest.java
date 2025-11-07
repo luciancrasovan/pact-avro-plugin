@@ -67,9 +67,9 @@ class PactPulsarConsumerTest {
 
   @BeforeEach
   public void debugPluginDiscovery() {
-    String pluginDir = System.getProperty("user.home") + "/.pact/plugins";
-    System.setProperty("pact.plugin.dir", pluginDir);
-    System.out.println("Set pact.plugin.dir to: " + pluginDir);
+      String pluginDir = System.getProperty("user.home") + "/.pact/plugins";
+      System.setProperty("pact.plugin.dir", pluginDir);
+      System.out.println("Set pact.plugin.dir to: " + pluginDir);
   }
 
   @Pact(consumer = "avro-plugin-consumer")
