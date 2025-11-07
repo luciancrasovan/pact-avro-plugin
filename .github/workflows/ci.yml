@@ -76,9 +76,8 @@ jobs:
           echo "=== Verifying installation ==="
           ls -la ~/.pact/plugins/avro-0.1.0/bin/
           
-          # Show full manifest for transparency
-          echo "Plugin manifest contents:"
-          cat ~/.pact/plugins/avro-*/pact-plugin.json
+          echo "Testing plugin binary:"
+          ~/.pact/plugins/avro-0.1.0/bin/pact-avro-plugin --version
 
       - name: Test Consumer
         env:
