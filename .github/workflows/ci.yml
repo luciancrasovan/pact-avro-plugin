@@ -100,5 +100,6 @@ jobs:
       - name: Test Provider
         env:
           PACT_BROKER_TAG: 1.0.0
+          PACT_PLUGIN_DIR: '/home/runner/.pact/plugins'
         shell: bash
         run: sbt '++ ${{ matrix.scala }}' provider/test
