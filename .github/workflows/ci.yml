@@ -109,10 +109,10 @@ jobs:
         shell: bash
         run: | 
           pact-broker record-deployment --pacticipant avro-plugin-consumer --version 3.0.0 --environment production
-          pact-broker record-deployment --pacticipant avro-plugin-producer --version 1.0.0 --environment production
+          pact-broker record-deployment --pacticipant avro-plugin-provider --version 1.0.0 --environment production
 
       - name: Can I deploy?
         shell: bash
         run: |
           pact-broker can-i-deploy --pacticipant avro-plugin-consumer --version 3.0.0 --to-environment production 
-          pact-broker can-i-deploy --pacticipant avro-plugin-producer --version 1.0.0 --to-environment production 
+          pact-broker can-i-deploy --pacticipant avro-plugin-provider --version 1.0.0 --to-environment production 
