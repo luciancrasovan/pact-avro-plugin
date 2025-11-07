@@ -75,9 +75,6 @@ jobs:
           # Verify permissions
           echo "=== Verifying installation ==="
           ls -la ~/.pact/plugins/avro-0.1.0/bin/
-          
-          echo "Testing plugin binary:"
-          ~/.pact/plugins/avro-0.1.0/bin/pact-avro-plugin --version
 
       - name: Test Consumer
         env:

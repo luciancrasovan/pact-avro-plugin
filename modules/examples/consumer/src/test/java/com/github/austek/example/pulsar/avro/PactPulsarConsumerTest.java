@@ -67,18 +67,9 @@ class PactPulsarConsumerTest {
 
   @BeforeEach
   public void debugPluginDiscovery() {
-    System.out.println("PACT_PLUGIN_DIR env: " + System.getenv("PACT_PLUGIN_DIR"));
-    System.out.println("user.home: " + System.getProperty("user.home"));
-
-    File pluginDir = new File(System.getProperty("user.home") + "/.pact/plugins/avro-0.1.0");
-    System.out.println("Plugin dir exists: " + pluginDir.exists());
-
-    if (pluginDir.exists()) {
-      String[] contents = pluginDir.list();
-      if (contents != null) {
-        System.out.println("Plugin dir contents: " + String.join(", ", contents));
-      }
-    }
+    String pluginDir = System.getProperty("user.home") + "/.pact/plugins";
+    System.setProperty("pact.plugin.dir", pluginDir);
+    System.out.println("Set pact.plugin.dir to: " + pluginDir);
   }
 
   @Pact(consumer = "avro-plugin-consumer")
